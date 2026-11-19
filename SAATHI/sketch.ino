@@ -92,5 +92,24 @@ void loop() {
   Serial.printf("Simulated pulse: %d bpm\n", simulatedPulse);
   Serial.printf("Simulated SpO2: %d %%\n\n", simulatedSpO2);
 
+    // One JSON object per line for the local dashboard.
+  // All values remain simulated; null means the test sensor could not be read.
+  if (tempValid) {
+    Serial.printf(
+      "{\"device\":\"SAATHI\",\"simulated\":true,"
+      "\"temperature_c\":%.1f,\"pulse_bpm\":%d,\"spo2_percent\":%d,"
+      "\"uptime_ms\":%lu}\n",
+      simulatedBodyTemp, simulatedPulse, simulatedSpO2, millis()
+    );
+  } else {
+    Serial.printf(
+      "{\"device\":\"SAATHI\",\"simulated\":true,"
+      "\"temperature_c\":null,\"pulse_bpm\":%d,\"spo2_percent\":%d,"
+      "\"uptime_ms\":%lu}\n",
+      simulatedPulse, simulatedSpO2, millis()
+    );
+  }
+
+
   delay(1000);
 }
